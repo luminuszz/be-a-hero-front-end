@@ -26,9 +26,23 @@ module.exports = {
     'react',
     '@typescript-eslint',
     'jsx-a11y',
-    'import'
+    'import',
+    'eslint-plugin-import-helpers'
   ],
   rules: {
+    'import-helpers/order-imports': [
+      'warn',
+      {
+        newlinesBetween: 'always',
+        groups: [
+          'module',
+          '/^@shared/',
+          ['parent', 'sibling', 'index'],
+        ],
+        alphabetize: { order: 'asc', ignoreCase: true },
+      },
+    ],
+    "import/extensions": ["never" | "ignorePackages"],
     'react/jsx-filename-extension': [
       'error',
       {

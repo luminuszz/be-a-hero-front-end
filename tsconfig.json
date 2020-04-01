@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,6 +21,8 @@
     "jsx": "react"
   },
   "include": [
-    "src"
+    "src",
+    "./src/declaration.d.ts"
+    
   ]
 }

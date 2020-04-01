@@ -1,8 +1,13 @@
+/* eslint-disable import/no-unresolved */
 import React from 'react';
-
+import { GlobalStyle } from './styles/Globalstyles';
+import Logon from './pages/Logon';
 
 export default function App() {
   return (
-    <h1>teste</h1>
+    <>
+      <GlobalStyle />
+      <Logon />
+    </>
   );
 }
