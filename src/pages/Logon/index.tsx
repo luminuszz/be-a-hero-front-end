@@ -15,7 +15,7 @@ const Logon = () => {
   const formRef = useRef<FormHandles>(null);
 
   const handleSubmit: SubmitHandler = (data) => {
-    console.log(data);
+
   };
 
 
