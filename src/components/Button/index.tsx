@@ -7,10 +7,14 @@ import { StyledButton } from './styles';
 
 interface Props{
   type:any
+  setDisabled?:boolean;
 }
 
 const Button: React.FC<Props> = (Props) => (
-  <StyledButton type={Props.type || 'button'}>
+  <StyledButton
+    disabled={Props.setDisabled}
+    type={Props.type || 'button'}
+  >
     {Props.children}
   </StyledButton>
 );

@@ -35,9 +35,11 @@ const Register = () => {
       .then((response) => {
         setLoad(false);
         toast.success(`Ong criada com sucesso, seu id:${response.data.id}`);
+        localStorage.setItem('id', response.data.id);
         history.push('/logon');
       })
       .catch((error) => {
+        console.log(error);
         toast.error(`Erro ao criar a ong:${error}`);
       })
       .finally(() => setLoad(false));
@@ -72,12 +74,12 @@ const Register = () => {
               style={{ width: 80, marginLeft: '8px' }}
             />
           </div>
-          <Button type="submit">
-            {load ? (
-              <Progress color="inherit" style={{ marginTop: '10px' }} />
-            ) : (
-              'Cadastar'
-            )}
+          <Button setDisabled={load} type="submit">
+            <Progress
+              style={{ marginTop: '8px' }}
+              defaultValue="Cadastrar"
+              load={load}
+            />
           </Button>
         </Form>
       </Content>

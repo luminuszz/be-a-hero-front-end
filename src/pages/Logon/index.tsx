@@ -1,20 +1,35 @@
 /* eslint-disable import/no-unresolved */
 import { SubmitHandler, FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { FiLogIn } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import heroes from '../../assets/heroes.png';
 import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import Progress from '../../components/Progress';
+import api from '../../services/api';
 import { Container } from './styles';
 
 const Logon = () => {
   const formRef = useRef<FormHandles>(null);
-
-  const handleSubmit: SubmitHandler = (data) => data;
+  const [load, setLoad] = useState(false);
+  const handleSubmit: SubmitHandler = (data) => {
+    setLoad(true);
+    api.post('/login', data)
+      .then((response) => {
+        setLoad(false);
+        const { token } = response.data;
+        sessionStorage.setItem('token', token);
+        toast.success('Logado com sucesso');
+      }).catch((error) => {
+        console.log(error);
+        toast.error(`Erro${error}`);
+      }).finally(() => setLoad(false));
+  };
 
 
   return (
@@ -29,7 +44,13 @@ const Logon = () => {
             type="password"
             placeholder="Informe sua senha"
           />
-          <Button type="submit">Login</Button>
+          <Button setDisabled={load} type="submit">
+            <Progress
+              load={load}
+              style={{ marginTop: '8px' }}
+              defaultValue="Login"
+            />
+          </Button>
           <Link to="/register">
             Não tenho cadastro
             <FiLogIn size={16} color="#E02041" />
