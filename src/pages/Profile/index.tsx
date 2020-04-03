@@ -1,19 +1,37 @@
 /* eslint-disable import/no-unresolved */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
 
 import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
+import api from '../../services/api';
 import { Container, Header, List } from './styles';
+
+interface Iincidentes{
+  title:string,
+  description:string,
+  value:number,
+}
 
 
 const Profile = () => {
+  const [incidents, setIncidets] = useState<Iincidentes[]>([]);
   const history = useHistory();
+  useEffect(() => {
+    const inciRequest = async () => {
+      const response = await api.get('/profile');
+      console.tron.log(response);
+      setIncidets(response.data);
+    };
+    inciRequest();
+  }, []);
+
   const logout = () => {
     sessionStorage.removeItem('token');
     history.push('/logon');
   };
+
   return (
     <Container>
       <Header>
@@ -35,50 +53,19 @@ const Profile = () => {
       <h1>Casos cadastratados</h1>
 
       <List>
-        <li>
-          <strong>Caso:</strong>
-          <p>Caso teste</p>
-          <strong>DESCRIÇÃO</strong>
-          <p>Descrição teste</p>
-          <strong>VALOR</strong>
-          <p>R$ 120,00</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
-        <li>
-          <strong>Caso:</strong>
-          <p>Caso teste</p>
-          <strong>DESCRIÇÃO</strong>
-          <p>Descrição teste</p>
-          <strong>VALOR</strong>
-          <p>R$ 120,00</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
-        <li>
-          <strong>Caso:</strong>
-          <p>Caso teste</p>
-          <strong>DESCRIÇÃO</strong>
-          <p>Descrição teste</p>
-          <strong>VALOR</strong>
-          <p>R$ 120,00</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
-        <li>
-          <strong>Caso:</strong>
-          <p>Caso teste</p>
-          <strong>DESCRIÇÃO</strong>
-          <p>Descrição teste</p>
-          <strong>VALOR</strong>
-          <p>R$ 120,00</p>
-          <button type="button">
-            <FiTrash2 size={20} color="#a8a8b3" />
-          </button>
-        </li>
+        {incidents.map((incident) => (
+          <li>
+            <strong>Caso:</strong>
+            <p>{incident.title}</p>
+            <strong>DESCRIÇÃO</strong>
+            <p>{incident.description}</p>
+            <strong>VALOR</strong>
+            <p>{incident.value}</p>
+            <button type="button">
+              <FiTrash2 size={20} color="#a8a8b3" />
+            </button>
+          </li>
+        ))}
       </List>
     </Container>
   );

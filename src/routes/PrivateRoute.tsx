@@ -21,7 +21,6 @@ const Routes: React.FC<IProps> = ({
   component: Component,
   ...rest
 }) => (
-
   <Route
     {...rest}
     render={(props) => (tokenRecieve() ? (

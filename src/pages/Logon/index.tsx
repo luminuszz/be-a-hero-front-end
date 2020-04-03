@@ -25,7 +25,6 @@ const Logon = () => {
         setLoad(false);
         const { token } = response.data;
         sessionStorage.setItem('token', token);
-        console.tron.log('passei por aqui');
         history.push('/profile');
         toast.success('Logado com sucesso');
       }).catch((error) => {
