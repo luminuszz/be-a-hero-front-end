@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
 
-import Logon from './pages/Logon';
 import Routes from './routes';
 import { GlobalStyle } from './styles/Globalstyles';
 
@@ -10,6 +10,7 @@ export default function App() {
     <>
       <GlobalStyle />
       <Routes />
+      <ToastContainer autoClose={5000} />
     </>
   );
 }
