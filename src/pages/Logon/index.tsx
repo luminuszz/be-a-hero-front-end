@@ -14,9 +14,7 @@ import { Container } from './styles';
 const Logon = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit: SubmitHandler = (data) => {
-
-  };
+  const handleSubmit: SubmitHandler = (data) => data;
 
 
   return (
