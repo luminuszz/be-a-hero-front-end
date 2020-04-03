@@ -1,12 +1,12 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Logon from '../pages/Logon';
 import NewIncident from '../pages/NewIncident';
 import Profile from '../pages/Profile';
 import Register from '../pages/Register';
-import Route from './PrivateRoute';
+import PrivateRoute from './PrivateRoute';
 
 const Routes = () => (
   <BrowserRouter>
@@ -14,8 +14,8 @@ const Routes = () => (
       <Route exact path="/logon" component={Logon} />
       <Route exact path="/register" component={Register} />
 
-      <Route exact path="/profile" component={Profile} isPrivate />
-      <Route exact path="/incidents/new" component={NewIncident} isPrivate />
+      <PrivateRoute exact path="/profile" component={Profile} />
+      <PrivateRoute exact path="/incidents/new" component={NewIncident} />
     </Switch>
   </BrowserRouter>
 );

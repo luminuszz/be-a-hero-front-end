@@ -3,12 +3,13 @@
 /* eslint-disable import/no-unresolved */
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import tokenRecieve from '../auth/findToken';
 
 
 interface Props{
- component: React.ComponentType;
+ component: any;
   isPrivate?: boolean;
   exact?:boolean;
   path?:string | string[];
@@ -16,18 +17,23 @@ interface Props{
 
 type IProps = Props
 
+const Routes: React.FC<IProps> = ({
+  component: Component,
+  ...rest
+}) => (
 
-const RouteWrapper:React.FC<IProps> = ({ component: Component, isPrivate, ...rest }) => {
-  const signed = tokenRecieve();
+  <Route
+    {...rest}
+    render={(props) => (tokenRecieve() ? (
+      <Component {...props} />
+    ) : (
 
-  if (!signed && isPrivate) {
-    return <Redirect to="/logon" />;
-  }
-  if (signed && !isPrivate) {
-    return <Redirect to="/profile" />;
-  }
-  return <Route {...rest} component={Component} />;
-};
+      <Redirect
+        to={{ pathname: '/logon', state: { from: props.location } }}
+      />
+    ))}
+  />
+);
 
 
-export default RouteWrapper;
+export default Routes;

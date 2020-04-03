@@ -3,7 +3,7 @@ import { SubmitHandler, FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import React, { useRef, useState } from 'react';
 import { FiLogIn } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import heroes from '../../assets/heroes.png';
@@ -17,18 +17,18 @@ import { Container } from './styles';
 const Logon = () => {
   const formRef = useRef<FormHandles>(null);
   const [load, setLoad] = useState(false);
+  const history = useHistory();
   const handleSubmit: SubmitHandler = async (data) => {
     setLoad(true);
-    console.log(data);
     await api.post('/login', data)
       .then((response) => {
         setLoad(false);
         const { token } = response.data;
-        console.log(response);
         sessionStorage.setItem('token', token);
+        console.tron.log('passei por aqui');
+        history.push('/profile');
         toast.success('Logado com sucesso');
       }).catch((error) => {
-        console.log(error);
         toast.error(`Erro${error}`);
       }).finally(() => setLoad(false));
   };
