@@ -17,12 +17,14 @@ import { Container } from './styles';
 const Logon = () => {
   const formRef = useRef<FormHandles>(null);
   const [load, setLoad] = useState(false);
-  const handleSubmit: SubmitHandler = (data) => {
+  const handleSubmit: SubmitHandler = async (data) => {
     setLoad(true);
-    api.post('/login', data)
+    console.log(data);
+    await api.post('/login', data)
       .then((response) => {
         setLoad(false);
         const { token } = response.data;
+        console.log(response);
         sessionStorage.setItem('token', token);
         toast.success('Logado com sucesso');
       }).catch((error) => {
@@ -38,7 +40,7 @@ const Logon = () => {
         <img src={logo} alt="be the hero" />
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>Faça seu logon</h1>
-          <Input name="login" type="text" placeholder="Informe seu login" />
+          <Input name="id" type="text" placeholder="Informe seu login" />
           <Input
             name="password"
             type="password"

@@ -2,8 +2,10 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import Routes from './routes';
+import './config/ReactotronConfig';
+import Routes from './routes/routes';
 import { GlobalStyle } from './styles/Globalstyles';
+
 
 export default function App() {
   return (
