@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-unresolved */
 import React, { useState, useEffect } from 'react';
 import { FiPower, FiTrash2 } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
-import api from '../../services/api';
+import { api, abort } from '../../services/api';
 import { Container, Header, List } from './styles';
 
+const ongName = sessionStorage.getItem('ongName');
 interface Iincidentes{
+  id:number,
   title:string,
   description:string,
   value:number,
@@ -19,24 +23,35 @@ const Profile = () => {
   const [incidents, setIncidets] = useState<Iincidentes[]>([]);
   const history = useHistory();
   useEffect(() => {
-    const inciRequest = async () => {
-      const response = await api.get('/profile');
+    async function inciRequest() {
+      const response = await api.get('/profile', {
+        cancelToken: abort.token,
+      });
       console.tron.log(response);
       setIncidets(response.data);
-    };
+    }
     inciRequest();
   }, []);
+  const deleteIncidents = async (id: number) => {
+    await api
+      .delete(`/incidents/${id}`)
+      .then(() => toast.success('Incidente deletado com sucesso.'))
+      .catch(() => toast.error('Erro ao deletar, Tente novamente.'));
+
+    setIncidets(incidents.filter((incident) => incident.id !== id));
+  };
 
   const logout = () => {
-    sessionStorage.removeItem('token');
+    sessionStorage.clear();
     history.push('/logon');
   };
+
 
   return (
     <Container>
       <Header>
         <img src={logo} alt="" />
-        <span>Bem vinda, ONG</span>
+        <span>{`Bem vinda ${ongName}`}</span>
 
         <Button type="button">
           <Link
@@ -54,14 +69,22 @@ const Profile = () => {
 
       <List>
         {incidents.map((incident) => (
-          <li>
+          <li key={incident.id}>
             <strong>Caso:</strong>
             <p>{incident.title}</p>
             <strong>DESCRIÇÃO</strong>
             <p>{incident.description}</p>
             <strong>VALOR</strong>
-            <p>{incident.value}</p>
-            <button type="button">
+            <p>
+              {Intl.NumberFormat('pt-br',
+                {
+                  style: 'currency',
+                  currency: 'BRL',
+                })
+                .format(incident.value)}
+
+            </p>
+            <button type="button" onClick={(e) => deleteIncidents(incident.id)}>
               <FiTrash2 size={20} color="#a8a8b3" />
             </button>
           </li>

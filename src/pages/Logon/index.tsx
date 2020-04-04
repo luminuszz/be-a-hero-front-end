@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { SubmitHandler, FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FiLogIn } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -11,25 +11,31 @@ import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Progress from '../../components/Progress';
-import api from '../../services/api';
+import { api, abort } from '../../services/api';
 import { Container } from './styles';
 
 const Logon = () => {
   const formRef = useRef<FormHandles>(null);
   const [load, setLoad] = useState(false);
   const history = useHistory();
-  const handleSubmit: SubmitHandler = async (data) => {
+
+  const handleSubmit: SubmitHandler = (data) => {
     setLoad(true);
-    await api.post('/login', data)
+    api
+      .post('/login', data)
       .then((response) => {
         setLoad(false);
-        const { token } = response.data;
+        const { token, user } = response.data;
+        console.tron.log(response.data);
         sessionStorage.setItem('token', token);
+        sessionStorage.setItem('ongName', user.name);
         history.push('/profile');
         toast.success('Logado com sucesso');
-      }).catch((error) => {
+      })
+      .catch((error) => {
         toast.error(`Erro${error}`);
-      }).finally(() => setLoad(false));
+      })
+      .finally(() => setLoad(false));
   };
 
 

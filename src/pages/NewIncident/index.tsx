@@ -10,7 +10,7 @@ import logo from '../../assets/logo.svg';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
 import Progress from '../../components/Progress';
-import api from '../../services/api';
+import { api } from '../../services/api';
 import { Container, Content, Section } from './styles';
 
 const NewIncident = () => {
@@ -56,6 +56,7 @@ const NewIncident = () => {
           <Form onSubmit={handleSubmit} ref={formRef}>
             <Input name="title" placeholder="Título do caso" />
             <textarea
+              value={textArea}
               onChange={(e) => setTextArea(e.target.value)}
               placeholder="Descrição"
             />
